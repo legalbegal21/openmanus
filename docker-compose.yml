@@ -18,7 +18,7 @@ services:
       - openmanus_network
     ports:
       - "8080:8080"  # OpenManus API
-    command: python3 run_openmanus_docker.py
+    command: python3 run_openmanus_direct.py
 
   vnc:
     image: dorowu/ubuntu-desktop-lxde-vnc:bionic
