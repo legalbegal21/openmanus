@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  openmanus:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: openmanus
+    environment:
+      - DISPLAY=vnc:0.0
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    volumes:
+      - ./:/app/OpenManus
+      - ~/.config/:/root/.config
+    depends_on:
+      - vnc
+    networks:
+      - openmanus_network
+    ports:
+      - "8080:8080"  # OpenManus API
+    command: python3 run_openmanus_docker.py
+
+  vnc:
+    image: dorowu/ubuntu-desktop-lxde-vnc:bionic
+    container_name: openmanus_vnc
+    environment:
+      - RESOLUTION=1280x800
+    ports:
+      - "6080:80"  # noVNC web access
+      - "5900:5900" # VNC server
+    networks:
+      - openmanus_network
+
+networks:
+  openmanus_network:
+    driver: bridge
